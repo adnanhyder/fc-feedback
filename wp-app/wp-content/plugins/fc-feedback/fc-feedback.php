@@ -1,6 +1,6 @@
 <?php
 /**
- * Plugin Name: fc-feedback
+ * Plugin Name: Fc Feedback
  * Plugin URI: #
  * Description: WordPress plugin that allows website visitors to vote on various articles
  * Version: 1.0.0
