@@ -1,0 +1,10 @@
+{
+    "name": "adii/fc-feedback",
+    "description": "WordPress plugin that allows website visitors to vote on various articles",
+    "autoload": {
+        "psr-4": {
+            "Adii\\FcFeedback\\": "src/"
+        }
+    },
+    "require": {}
+}

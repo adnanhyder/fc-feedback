@@ -16,3 +16,68 @@
  *
  * @package FC-Feedback
  */
+
+defined( 'ABSPATH' ) || exit;
+
+if ( ! defined( 'FC_PLUGIN_FILE' ) ) {
+    define( 'FC_PLUGIN_FILE', __FILE__ );
+}
+
+if ( ! defined( 'FC_PLUGIN_VERSION' ) ) {
+    define( 'FC_PLUGIN_VERSION', '1.0.0' );
+}
+
+if ( ! defined( 'FC_PLUGIN_DIR' ) ) {
+    define( 'FC_PLUGIN_DIR', __DIR__ );
+}
+
+if ( ! defined( 'FC_INCLUDES_DIR' ) ) {
+    define( 'FC_INCLUDES_DIR', FC_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'includes' );
+}
+
+if ( ! defined( 'FC_VENDOR_DIR' ) ) {
+    define( 'FC_VENDOR_DIR', FC_PLUGIN_DIR . DIRECTORY_SEPARATOR . 'vendor' );
+}
+
+if ( ! defined( 'FC_PLUGIN_SRC_URL' ) ) {
+    define( 'FC_PLUGIN_SRC_URL', plugin_dir_url( FC_PLUGIN_FILE ) . 'src' );
+}
+
+$loader = include_once FC_VENDOR_DIR . DIRECTORY_SEPARATOR . 'autoload.php';
+
+if ( ! $loader ) {
+    throw new Exception( 'vendor/autoload.php missing please run `composer install`' );
+}
+
+/**
+ * Activation and Deactivation hooks for WordPress
+ */
+
+if ( ! function_exists( 'fc_extension_activate' ) ) {
+    /**
+     * Activation Hook for WordPress.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    function fc_extension_activate() {
+       //Add any Activation tasks here (e.g., Removal of free version, Create Databases).
+    }
+
+    register_activation_hook( __FILE__, 'fc_extension_activate' );
+}
+
+if ( ! function_exists( 'fc_extension_deactivate' ) ) {
+    /**
+     * Deactivation hook for WordPress.
+     *
+     * @since 1.0.0
+     * @return void
+     */
+    function fc_extension_deactivate() {
+        // Add any deactivation tasks here (e.g., cleanup, data removal).
+        // This code will be executed once when the plugin is deactivated.
+    }
+
+    register_deactivation_hook( __FILE__, 'fc_extension_deactivate' );
+}
