@@ -17,7 +17,11 @@
  * @package FC-Feedback
  */
 
+use FCFeedback\Core;
+
 defined( 'ABSPATH' ) || exit;
+
+
 
 if ( ! defined( 'FC_PLUGIN_FILE' ) ) {
     define( 'FC_PLUGIN_FILE', __FILE__ );
@@ -80,4 +84,27 @@ if ( ! function_exists( 'fc_extension_deactivate' ) ) {
     }
 
     register_deactivation_hook( __FILE__, 'fc_extension_deactivate' );
+}
+
+if ( ! function_exists( 'fc_initialize' ) ) {
+    /**
+     * Initialize the plugin.
+     *
+     * @since 1.0.0
+     * @return Core Instance of the Core class.
+     */
+    function fc_initialize(): ?Core {
+
+        static $fc;
+
+        if ( ! isset( $fc ) ) {
+            $fc = Core::instance();
+        }
+
+        $GLOBALS['fc_feedback'] = $fc;
+
+        return $fc;
+    }
+
+    add_action( 'plugins_loaded', 'fc_initialize', 10 );
 }

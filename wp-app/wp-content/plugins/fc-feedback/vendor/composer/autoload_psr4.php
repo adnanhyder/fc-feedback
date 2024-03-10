@@ -6,5 +6,5 @@ $vendorDir = dirname(__DIR__);
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Adii\\FcFeedback\\' => array($baseDir . '/src'),
+    'FCFeedback\\' => array($baseDir . '/src'),
 );
