@@ -5,9 +5,9 @@
  * Description: WordPress plugin that allows website visitors to vote on various articles
  * Version: 1.0.0
  * Author: Adnan Hyder Pervez
- * Author URI: #
+ * Author URI: 12345adnan@gmail.com
  * Developer: Adnan
- * Developer URI: #
+ * Developer URI: 12345adnan@gmail.com
  * Text Domain: fc
  * Domain Path: /languages
  *
