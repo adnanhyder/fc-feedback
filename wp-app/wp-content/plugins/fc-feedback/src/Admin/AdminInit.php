@@ -7,6 +7,8 @@
 
 namespace FCFeedback\Admin;
 
+use FCFeedback\Front\FrontInit;
+
 defined( 'ABSPATH' ) || exit;
 
 /**
@@ -28,23 +30,57 @@ class AdminInit {
 	 * @since 1.0.0
 	 */
 	protected function __construct() {
-
+        $this->hooks();
 
 	}
 
+    /**
+     * Hooks Loaded.
+     *
+     * @since 1.0.0
+     */
+    public function hooks() {
+        add_action( 'add_meta_boxes', array( $this, 'fc_feedback_meta_box' ) , 10 );
+
+    }
+
 	/**
-	 * Initializing the Menu Class.
+	 * Registering Meta box.
 	 *
 	 * @since 1.0.0
 	 * @return void.
 	 */
-	public function admin_post_handle() {
-
+	public function fc_feedback_meta_box() {
+        add_meta_box(
+            'fc_feedback_meta_box',
+            __('Voting Results','fc'),
+            array($this, 'fc_feedback_meta_box_content'),
+            'post',
+            'side',
+            'default'
+        );
 
 	}
 
+    /**
+     * Meta box Content to Display.
+     *
+     * @since 1.0.0
+     * @param $post
+     *
+     */
+    public function fc_feedback_meta_box_content($post) {
+        $data = FrontInit::instance()->get_vote_count_by_postid($post->ID);
+        ob_start();
+        include trailingslashit( FC_INCLUDES_DIR ) . trailingslashit( 'views' ) .'admin_voting.php';
+        $voting_html = ob_get_clean();
+        $voting_html = apply_filters('fc_feedback_results', $voting_html);
+        echo $voting_html;
+    }
+
+
 	/**
-	 * Main Menu Instance.
+	 * AdminInit Instance.
 	 * Ensures only one instance of the class is loaded or can be loaded.
 	 *
 	 * @return AdminInit instance.

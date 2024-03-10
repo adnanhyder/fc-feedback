@@ -33,7 +33,7 @@ class FrontInit {
 	}
 
     /**
-     * Get the options slug.
+     * Hooks Loaded.
      *
      * @since 1.0.0
      */
@@ -75,17 +75,42 @@ class FrontInit {
      */
     public function submit_vote() {
         check_ajax_referer('fc_nonce', 'security');
-        $post_id = fc_sanitize_thing($_POST['post_id']);
+
+        $decoded_string = base64_decode($_POST['post_id']);
+        $post_id = fc_sanitize_thing($decoded_string);
         $vote_type = fc_sanitize_thing($_POST['vote_type']);
         $user_ip = $_SERVER['REMOTE_ADDR'];
+        if($vote_type === 'positive'){
+            $user_answer = 1;
+        }else{
+            $user_answer = 0;
+        }
 
-        $voted = get_post_meta($post_id, 'fc_voted_' . $user_ip, true);
-        print_r($post_id);
-        print_r($user_ip);
-        print_r($vote_type);
-        print_r($voted);
+        if (post_exists($post_id)) {
+            wp_send_json_error('Invalid post ID.');
+        }
+        $user_has_voted = get_post_meta($post_id, 'fc_feedback_voted_' . $user_ip, true);
 
-        wp_send_json_success(1);
+        if ($user_has_voted) {
+            wp_send_json_error('You have already voted on this post.');
+        }
+
+        $current_count = (int)get_post_meta($post_id, 'fc_feedback_' . $vote_type, true);
+
+        update_post_meta($post_id, 'fc_feedback_' . $vote_type, $current_count + 1);
+        update_post_meta($post_id, 'fc_feedback_voted_' . $user_ip, $vote_type);
+
+        $data = $this->get_vote_count_by_postid($post_id);
+        wp_send_json_success(
+            array(
+                'result' => 1,
+                'yes' => $data['yes'],
+                'no' => $data['no'],
+                'total' => $data['total'],
+                'user_answer' => $user_answer,
+            )
+        );
+
     }
 
 	/**
@@ -104,6 +129,31 @@ class FrontInit {
 
 		return self::$instance;
 	}
+
+    /**
+     * get_vote_count_by_postid ().
+     * yes and no percenetage string with keys
+     *
+     * @param $post_id
+     * @return array .
+     * @since 1.0.0
+     */
+    public function get_vote_count_by_postid($post_id){
+        $yes_count = (int)get_post_meta($post_id, 'fc_feedback_positive', true);
+        $no_count = (int)get_post_meta($post_id, 'fc_feedback_negative', true);
+        $total_count = $yes_count + $no_count;
+
+        $yes_percentage = ($total_count > 0) ? round(($yes_count / $total_count) * 100) : 0;
+        $no_percentage = 0;
+        if($total_count != 0) {
+            $no_percentage = 100 - $yes_percentage;
+        }
+        return array(
+            'yes' => $yes_percentage . '%',
+            'no' => $no_percentage . '%',
+            'total' => $total_count,
+        );
+    }
 
 	/**
 	 * Cloning is forbidden.

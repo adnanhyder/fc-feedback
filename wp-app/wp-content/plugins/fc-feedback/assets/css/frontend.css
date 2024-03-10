@@ -55,14 +55,21 @@
     font-weight: bold;
 }
 
-/*Hover and active effect*/
-.fc-buttons .button:hover{
-    border:  2px solid #1F6BFF;
+.fc-hide{
+    display: none;
 }
 
-.fc-buttons .button:hover  svg  {
+/*Hover and active effect*/
+.fc-buttons .button:hover , .fc-active{
+    border:  2px solid #1F6BFF !important;
+}
+
+.fc-buttons .button:hover  svg , .fc-active svg {
     filter: invert(31%) sepia(99%) saturate(5379%) hue-rotate(222deg) brightness(100%) contrast(105%);
 }
+
+
+
 
 @media screen and (max-width: 500px) {
 
