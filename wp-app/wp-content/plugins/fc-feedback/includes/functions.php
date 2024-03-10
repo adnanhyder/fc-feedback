@@ -16,7 +16,7 @@ if (! defined('ABSPATH') ) {
     exit; // Exit if accessed directly.
 }
 
-if (! function_exists('wprobo_sanitize_thing') ) {
+if (! function_exists('fc_sanitize_thing') ) {
     /**
      * Recursive sanitation for text, integer or array.
      *
