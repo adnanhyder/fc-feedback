@@ -5,8 +5,6 @@
  * Description: WordPress plugin allows website visitors to vote on various articles
  * Version: 1.0.0
  * php version 8.0.0
- * Requires at least: 8.0
- * Requires PHP: 8.0
  * Author: Adnan Hyder Pervez
  * Author URI: 12345adnan@gmail.com
  * Developer: Adnan
